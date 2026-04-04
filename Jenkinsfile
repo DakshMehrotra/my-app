@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "daksh24/myapp"
+        DOCKER = "/usr/bin/docker"
     }
 
     stages {
@@ -15,21 +16,21 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:latest .'
+                sh '$DOCKER build -t $IMAGE_NAME:latest .'
             }
         }
 
         stage('Login to Docker Hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKER_TOKEN')]) {
-                    sh 'echo $DOCKER_TOKEN | docker login -u YOUR_DOCKERHUB_USERNAME --password-stdin'
+                    sh 'echo $DOCKER_TOKEN | $DOCKER login -u daksh24 --password-stdin'
                 }
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                sh 'docker push $IMAGE_NAME:latest'
+                sh '$DOCKER push $IMAGE_NAME:latest'
             }
         }
     }
