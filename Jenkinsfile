@@ -9,7 +9,7 @@ pipeline {
 
         stage('Clone Source') {
             steps {
-                git 'https://github.com/DakshMehrotra/my-app.git'
+                git branch: 'main', url: 'https://github.com/DakshMehrotra/my-app.git'
             }
         }
 
@@ -22,7 +22,7 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKER_TOKEN')]) {
-                    sh 'echo $DOCKER_TOKEN | docker login -u daksh24 --password-stdin'
+                    sh 'echo $DOCKER_TOKEN | docker login -u YOUR_DOCKERHUB_USERNAME --password-stdin'
                 }
             }
         }
